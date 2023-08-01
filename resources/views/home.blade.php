@@ -13,7 +13,7 @@
                         @forelse($activities as $activity)
                             <div>
                                 <a href="{{ route('activity.show', $activity) }}">
-                                    <img width="100" height="100" src="{{ $activity->photo }}" alt="{{ $activity->name }}">
+                                    <img class="rounded " width="100" height="100" src="{{ $activity->photo }}" alt="{{ $activity->name }}">
                                 </a>
                                 <h2>
                                     <a href="{{ route('activity.show', $activity) }}" class="text-lg font-semibold">{{ $activity->name }}</a>
