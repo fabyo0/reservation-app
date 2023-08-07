@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Activity;
 use App\Models\User;
 use App\Models\UserInvitation;
 use App\Providers\RouteServiceProvider;
@@ -35,6 +36,11 @@ class RegisteredUserController extends Controller
 
             $email = $invitation->email;
         }
+
+        if ($request->has('activity')) {
+            session()->put('activity', $request->input('activity'));
+        }
+
         return view('auth.register', [
             'email' => $email
         ]);
@@ -80,6 +86,16 @@ class RegisteredUserController extends Controller
         event(new Registered($user));
 
         Auth::login($user);
+
+        $activity = Activity::find($request->session()->get('activity'));
+
+        if ($request->session()->get('activity') && $activity) {
+            $user->activities()->attach($request->session()->get('activity'));
+
+            $user->notify(new RegisteredToActivityNotification($activity));
+
+            return redirect()->route('my-activity.show')->with('success', 'You have successfully registered.');
+        }
 
         return redirect(RouteServiceProvider::HOME);
     }
