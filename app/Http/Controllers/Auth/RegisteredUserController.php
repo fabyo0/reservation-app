@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Activity;
 use App\Models\User;
 use App\Models\UserInvitation;
+use App\Notifications\RegisteredToActivityNotification;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -79,7 +80,7 @@ class RegisteredUserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role_id' => $role ?? Role::CUSTOMER->value,
+            'role_id' => $role ?? Role::CUSTOMER,
             'company_id' => $company ?? null
         ]);
 

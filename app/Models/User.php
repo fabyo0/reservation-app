@@ -46,6 +46,7 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'role_id' => \App\Enums\Role::class
     ];
 
     public function role(): BelongsTo
@@ -62,4 +63,5 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Activity::class);
     }
+
 }

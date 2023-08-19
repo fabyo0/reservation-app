@@ -6,6 +6,7 @@ use App\Http\Controllers\CompanyActivityController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CompanyGuideController;
 use App\Http\Controllers\CompanyUserController;
+use App\Http\Controllers\GuideActivityController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MyActivityController;
 use App\Http\Controllers\ProfileController;
@@ -21,6 +22,18 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+Route::get('/user', function () {
+    $user = \App\Models\User::create([
+        'name' => 'emre',
+        'email' => 'emre@gmail.com',
+        'password' => \Illuminate\Support\Facades\Hash::make('123'),
+        'role_id' => 1
+    ]);
+    if ($user){
+        dd('ok');
+    }
+});
 
 Route::get('/', function () {
     return view('welcome');
@@ -41,7 +54,6 @@ Route::get('/activities/{activity}', [ActivityController::class, 'show'])
 Route::post('/activities/{activity}/register', [ActivityRegisterController::class, 'store'])
     ->name('activities.register');
 
-
 Route::middleware('auth')->group(function () {
 
     //Profile
@@ -50,6 +62,14 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('/activities', [MyActivityController::class, 'show'])->name('my-activity.show');
+
+    // Guide Activities
+    Route::get('/guides/activities', [GuideActivityController::class, 'show'])
+        ->name('guide-activity.show');
+
+    // Cancel Activity
+    Route::delete('/activities/{activity}', [MyActivityController::class, 'destroy'])
+        ->name('my-activity.destroy');
 
     //Companies
     Route::resource('companies', CompanyController::class)
@@ -69,7 +89,6 @@ Route::middleware('auth')->group(function () {
 
     // Show Activity
     Route::get('/activities/{activity}', [ActivityController::class, 'show'])->name('activity.show');
-
 });
 
 require __DIR__ . '/auth.php';

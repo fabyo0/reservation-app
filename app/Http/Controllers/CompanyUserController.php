@@ -52,14 +52,6 @@ class CompanyUserController extends Controller
 
         $this->authorize('create', $company);
 
-        /*$company->users()->create([
-            'name' => $request->input('name'),
-            'email' => $request->input('email'),
-            'password' => Hash::make($request->input('password')),
-            'role_id' => Role::COMPANY_OWNER->value
-        ]);
-        return Redirect::route('companies.users.index', $company);*/
-
         $invitation = UserInvitation::create([
             'email' => $request->input('email'),
             'token' => Str::uuid(),
