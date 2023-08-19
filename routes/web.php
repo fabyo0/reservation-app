@@ -23,18 +23,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/user', function () {
-    $user = \App\Models\User::create([
-        'name' => 'emre',
-        'email' => 'emre@gmail.com',
-        'password' => \Illuminate\Support\Facades\Hash::make('123'),
-        'role_id' => 1
-    ]);
-    if ($user){
-        dd('ok');
-    }
-});
-
 Route::get('/', function () {
     return view('welcome');
 });
@@ -66,6 +54,10 @@ Route::middleware('auth')->group(function () {
     // Guide Activities
     Route::get('/guides/activities', [GuideActivityController::class, 'show'])
         ->name('guide-activity.show');
+
+    Route::get('/guides/activities/{activity}/pdf', [GuideActivityController::class, 'export'])
+        ->name('guide-activity.export');
+
 
     // Cancel Activity
     Route::delete('/activities/{activity}', [MyActivityController::class, 'destroy'])
